@@ -1,46 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import PlayerCard from './PlayerCard';
 
-
-const PlayerCardList = props => {
-  
-  const [players, setPlayers] = useState([]);
-    useEffect(() => {
-      const getPlayers = () => {
-        axios
-          .get('http://localhost:5000/api/players')
-          .then(response => {
-
-            setPlayers(response.data);
-          })
-          .catch(error => {
-            console.error('Server Error', error);
-          });
-      };
-
-      getPlayers();
-    }, []);
-
+function PlayerCardList ({ playerData }) {
+    // console.log(playerData)
     return (
-      <div className="movie-list">
-        {players.map(player => (
-          <PlayerDetails key={player.name} player={player} />
-        ))}
-      </div>
-    );
-  }
-
-  function PlayerDetails({player}) {
-
-    return (
-
-      <div className="player-card">
-    <h1> {player.name} </h1>
-    <h3> Searches: {player.searches} </h3>
-    <h3>{player.country}</h3>
-      </div>
-
-    );
-};
+        <div className='player-list' data-testid="playersList">
+            {player.data.map(player => (
+                <PlayerCardList key={player.id} player={player} />
+            ))}
+        </div>
+    )
+}
 
 export default PlayerCardList;

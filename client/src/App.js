@@ -1,20 +1,35 @@
-import React, { useState, useEffect }  from 'react';
-import ReactDOM from "react-dom";
-// import axios from "axios";
+import React from 'react';
 import './App.css';
+import axios from 'axios';
+import PlayerCardList from './components/PlayerCardList';
+import NavBar from './components/NavBar';
+import PlayerCard from './components/PlayerCard';
 
-import PlayerCard from './components/PlayerCard.js';
-import PlayerCardList from './components/PlayerCardList.js';
-import Navbar from "./components/NavBar.js";
+class App extends React.Component {
+  state = {
+    playerData: []
+  }
 
-const App()=> {
-  return (
-    <div className="App">
-      <Navbar />
-      <PlayerCard/>
-      <PlayerCardList />
-    </div>
-  );
+  componentDidMount() {
+    axios 
+      .get(`http://localhost:5000/api/players`)
+      .then(res => {
+        console.log(res);
+        this.setState({
+          playerData: res.data
+        })
+      })
+      .catch(err => console.log('axios error', err))
+  }
+  render(){
+    return (
+      <div className='App'>
+        <NavBar />
+        <PlayerCard/>
+        <PlayerCardList playerData={this.state.playerData}/>
+      </div>
+    )
+  }
 }
 
 export default App;
