@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-function PlayerCard({ player }) {
-    console.log(player)
-    return (
-        <div className='player-card'>
-            {/* <h3>Name:{player.name}</h3>
-            <p>Country:{player.country}</p>
-            <p>Google Searches: {player.searches}</p> */}
-        </div>
-    )
-}
+const PlayerCard = props => {
+  // console.log(player)
+  return (
+    <div className="player-card">
+      <h3>Name:{props.player.name}</h3>
+      <p>Country:{props.player.country}</p>
+      <p>Google Searches: {props.player.searches}</p>
+    </div>
+  );
+};
 
 export default PlayerCard;
