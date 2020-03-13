@@ -1,34 +1,46 @@
-import React from "react";
-import PlayerCard from "./PlayerCard";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-export default class PlayerList extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      players: []
-    };
-  }
 
-  componentDidMount() {
-    fetch("http://localhost:5000/api/players")
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        this.setState({ players: data });
-      })
-      .catch(err => {
-        console.log("Error: ", err);
-      });
-  }
+const PlayerCardList = props => {
+  
+  const [players, setPlayers] = useState([]);
+    useEffect(() => {
+      const getPlayers = () => {
+        axios
+          .get('http://localhost:5000/api/players')
+          .then(response => {
 
-  render() {
+            setPlayers(response.data);
+          })
+          .catch(error => {
+            console.error('Server Error', error);
+          });
+      };
+
+      getPlayers();
+    }, []);
+
     return (
-      <div className="player-list">
-        {this.state.players.map(player => {
-          return <PlayerCard key={player.id} player={player} />;
-        })}
+      <div className="movie-list">
+        {players.map(player => (
+          <PlayerDetails key={player.name} player={player} />
+        ))}
       </div>
     );
   }
-}
+
+  function PlayerDetails({player}) {
+
+    return (
+
+      <div className="player-card">
+    <h1> {player.name} </h1>
+    <h3> Searches: {player.searches} </h3>
+    <h3>{player.country}</h3>
+      </div>
+
+    );
+};
+
+export default PlayerCardList;
